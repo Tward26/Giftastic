@@ -24,23 +24,6 @@ body{
     height: 100%;
 }
 
-.hidden{
-    display: none;
-}
-
-.inlineHead{
-    display: inline;
-}
-
-#clrFav{
-    float: right;
-}
-
 #favorites{
-    clear: both;
     min-height: 15vh;
-}
-
-.card-header{
-    overflow: auto;
 }
