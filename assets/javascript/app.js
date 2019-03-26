@@ -1,6 +1,7 @@
-//variable declaration
-var topics = ["Beetle", "Lobster", "Elephant", "Warthog", "Fruit Bat", "Gorilla", "Hyena", "Alligator", "Rooster", "Snake", "Vulture"]
-var hidden = $(".hidden");
+$(document).ready(function() {
+
+//initial array declaration
+var topics = ["Beetle", "Lobster", "Elephant", "Boar", "Fruit Bat", "Gorilla", "Hyena", "Alligator", "Rooster", "Snake", "Vulture", "Llama"]
 
 //function declaration
 function renderButtons() {
@@ -21,7 +22,9 @@ function renderButtons() {
 
 function renderGif() {
     var animal = $(this).attr("data-name");
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10&rating=pg";
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=MJ68Z6txRmEzdp8Ow2QiKvYGwxbb9ip4&limit=10&rating=pg";
+    //MJ68Z6txRmEzdp8Ow2QiKvYGwxbb9ip4
+    //dc6zaTOxFJmzC
 
     $.ajax({
         url: queryURL,
@@ -29,10 +32,7 @@ function renderGif() {
     }).then(function (response) {
         $("#gif-div").empty();
         console.log(response);
-        if (hidden.css("display") === "none") {
-            hidden.css("display", "block");
-        }
-        $("#gifHeader").html(`<h5>Here are your ${animal} gifs.</h5>`);
+        $("#gifHeader").html(`<h5>${animal} GIFs, click on the GIF to animate it!</h5>`);
         var results = response.data;
         for (var j = 0; j < results.length; j++) {
             var animalDiv = $("<div>").addClass("animalDiv");
@@ -40,12 +40,11 @@ function renderGif() {
                 .addClass("card-text")
                 .html(`Rating: ${results[j].rating.toUpperCase()}`);
             var animalImage = $("<img>")
-                .addClass("gif")
+                .addClass("gif img-thumbnail")
                 .attr("data-state", "still")
                 .attr("data-still", results[j].images.fixed_width_still.url)
                 .attr("data-animate", results[j].images.fixed_width.url)
                 .attr("src", results[j].images.fixed_width_still.url);
-
                 animalDiv.append(p);
             animalDiv.append(animalImage);
             $("#gif-div").prepend(animalDiv);
@@ -77,6 +76,11 @@ function addButton(event) {
     }
 }
 
+//prevents right clicking on images
+$(document).on("contextmenu", "img", function(){
+    return false;
+ }); 
+
 //event listeners
 $(document).on("click", ".animal", renderGif);
 $(document).on("click", ".gif", animateGif);
@@ -84,3 +88,5 @@ $(document).on("click", "#add-gif", addButton);
 
 //Displays starter array buttons
 renderButtons();
+
+}); 
