@@ -15,22 +15,32 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12" id="button-div">
+            <div class="col-12 d-flex d-md-block flex-wrap justify-content-center" id="button-div">
             </div>
         </div>
         <div class="row">
-            <div class="col-9" id="gif-div">
-            </div>
-            <div class="col-3" id="form-div">
-                <form>
-                    <div class="form-group">
-                        <label for="gif-input">Add an animal!</label>
-                        <input type="text" class="form-control" id="gif-input">
-                        <br>
-                        <!-- Button triggers new movie to be added -->
-                        <input id="add-gif" type="submit" value="Submit" class="btn btn-primary">
+            <div class="col-12 order-2 order-md-1 col-md-9 mt-2">
+                <div class="card hidden">
+                    <div class="card-header" id="gifHeader"></div>
+                    <div class="card-body d-flex flex-wrap justify-content-around" id="gif-div">
                     </div>
-                </form>
+                </div>
+            </div>
+            <div class="col-12 order-1 order-md-2 col-md-3 mt-2" id="form-div">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Add an animal!</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="gif-input">
+                                <!-- Button triggers new movie to be added -->
+                                <input id="add-gif" type="submit" value="Submit" class="btn btn-success">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

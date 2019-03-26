@@ -1,17 +1,14 @@
 //variable declaration
-var topics = ["cat", "dog", "warthog", "beetle", "tarantula"]
+var topics = ["Beetle", "Lobster", "Elephant", "Warthog", "Fruit Bat", "Gorilla", "Hyena", "Alligator", "Rooster", "Snake", "Vulture"]
+var hidden = $(".hidden");
 
 //function declaration
-
-
-// Function for displaying movie data
 function renderButtons() {
 
     $("#button-div").empty();
     for (var i = 0; i < topics.length; i++) {
-
         var a = $("<button>");
-        a.addClass("animal btn btn-primary");
+        a.addClass("animal btn btn-success");
         a.attr("type", "button");
         // Adding a data-attribute
         a.attr("data-name", topics[i]);
@@ -22,68 +19,68 @@ function renderButtons() {
     }
 }
 
-function displayGif() {
-
+function renderGif() {
     var animal = $(this).attr("data-name");
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=MJ68Z6txRmEzdp8Ow2QiKvYGwxbb9ip4&limit=10&rating=pg";
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10&rating=pg";
 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
         $("#gif-div").empty();
+        console.log(response);
+        if (hidden.css("display") === "none") {
+            hidden.css("display", "block");
+        }
+        $("#gifHeader").html(`<h5>Here are your ${animal} gifs.</h5>`);
         var results = response.data;
         for (var j = 0; j < results.length; j++) {
-            var animalDiv = $("<div>");
-            animalDiv.addClass("animalDiv");
-            var p = $("<p>").text("Rating: " + results[j].rating);
-            var animalImage = $("<img>");
-            animalImage.attr("class", "gif");
-            animalImage.attr("data-state", "still");
-            animalImage.attr("data-still", results[j].images.fixed_width_still.url);
-            animalImage.attr("data-animate", results[j].images.fixed_width.url);
-            animalImage.attr("src", results[j].images.fixed_width_still.url);
+            var animalDiv = $("<div>").addClass("animalDiv");
+            var p = $("<p>")
+                .addClass("card-text")
+                .html(`Rating: ${results[j].rating.toUpperCase()}`);
+            var animalImage = $("<img>")
+                .addClass("gif")
+                .attr("data-state", "still")
+                .attr("data-still", results[j].images.fixed_width_still.url)
+                .attr("data-animate", results[j].images.fixed_width.url)
+                .attr("src", results[j].images.fixed_width_still.url);
 
-            // Appending the paragraph and image tag to the animalDiv
-            animalDiv.append(p);
+                animalDiv.append(p);
             animalDiv.append(animalImage);
-
-
             $("#gif-div").prepend(animalDiv);
         }
     });
 }
 
 function animateGif() {
-    // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
     var state = $(this).attr("data-state");
-    // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-    // Then, set the image's data-state to animate
-    // Else set src to the data-still value
     if (state === "still") {
-      $(this).attr("src", $(this).attr("data-animate"));
-      $(this).attr("data-state", "animate");
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
     } else {
-      $(this).attr("src", $(this).attr("data-still"));
-      $(this).attr("data-state", "still");
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
     }
-  }
-  
-$("#add-gif").on("click", function(event) {
+}
+
+function addButton(event) {
     event.preventDefault();
-    // This line grabs the input from the textbox
-    var newButton = $("#gif-input").val().trim();
+    if ($("#gif-input").val() === "") {
+        alert("Please type something in the form")
+    }
+    else {
+        var newButton = $("#gif-input").val().trim();
+        topics.push(newButton);
+        renderButtons();
+        $("#gif-input").val("");
+    }
+}
 
-    // Adding movie from the textbox to our array
-    topics.push(newButton);
-
-    // Calling renderButtons which handles the processing of our movie array
-    renderButtons();
-    $("#gif-input").val("");
-  });
-
-//function calls
-$(document).on("click", ".animal", displayGif);
+//event listeners
+$(document).on("click", ".animal", renderGif);
 $(document).on("click", ".gif", animateGif);
+$(document).on("click", "#add-gif", addButton);
 
+//Displays starter array buttons
 renderButtons();
