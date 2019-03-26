@@ -9,7 +9,7 @@ function renderButtons() {
     $("#button-div").empty();
     for (var i = 0; i < topics.length; i++) {
         var a = $("<button>");
-        a.addClass("animal btn btn-success");
+        a.addClass("animalBtn btn btn-success");
         a.attr("type", "button");
         // Adding a data-attribute
         a.attr("data-name", topics[i]);
@@ -45,8 +45,13 @@ function renderGif() {
                 .attr("data-still", results[j].images.fixed_width_still.url)
                 .attr("data-animate", results[j].images.fixed_width.url)
                 .attr("src", results[j].images.fixed_width_still.url);
+                var addFavorite = $("<button>")
+                .addClass("btn btn-success favButton")
+                .attr("type", "button")
+                .text("Add to Favorites");
                 animalDiv.append(p);
             animalDiv.append(animalImage);
+            animalDiv.append(addFavorite);
             $("#gif-div").prepend(animalDiv);
         }
     });
@@ -76,15 +81,32 @@ function addButton(event) {
     }
 }
 
+function addFavorite(){
+    if($(".hidden").css("display") === "none"){
+        $(".hidden").css("display", "block");
+    } 
+    var fav = $(this).parent().clone();
+    console.log(fav);
+    fav.children("button").remove();
+    localStorage.setItem("lastname", "Smith");
+    fav.appendTo($("#favorites"));
+}
+
+function emptyFavorite(){
+    $("#favorites").empty();
+}
+
 //prevents right clicking on images
 $(document).on("contextmenu", "img", function(){
     return false;
  }); 
 
 //event listeners
-$(document).on("click", ".animal", renderGif);
+$(document).on("click", ".animalBtn", renderGif);
 $(document).on("click", ".gif", animateGif);
 $(document).on("click", "#add-gif", addButton);
+$(document).on("click", ".favButton", addFavorite);
+$(document).on("click", "#clrFav", emptyFavorite);
 
 //Displays starter array buttons
 renderButtons();
