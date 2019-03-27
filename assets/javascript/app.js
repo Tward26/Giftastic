@@ -1,9 +1,10 @@
 $(document).ready(function () {
 
-    //initial array declaration
+    //variable declaration
     var topics = ["Beetle", "Lobster", "Elephant", "Boar", "Fruit Bat", "Gorilla", "Hyena", "Alligator", "Rooster", "Snake", "Vulture", "Llama"]
+    var FAV_KEY = 'favorites';
 
-    //function declaration
+    //renders buttons at top of screen
     function renderButtons() {
 
         $("#button-div").empty();
@@ -17,11 +18,10 @@ $(document).ready(function () {
         }
     }
 
+    //renders the GIFs by pulling them thru AJAX and attaches the correct attributes to the various pieces
     function renderGif() {
         var animal = $(this).attr("data-name");
         var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=MJ68Z6txRmEzdp8Ow2QiKvYGwxbb9ip4&limit=10&rating=pg";
-        //MJ68Z6txRmEzdp8Ow2QiKvYGwxbb9ip4
-        //dc6zaTOxFJmzC
 
         $.ajax({
             url: queryURL,
@@ -51,6 +51,7 @@ $(document).ready(function () {
         });
     }
 
+    //allows the GIFs to be either still images or animated
     function animateGif() {
         var state = $(this).attr("data-state");
         if (state === "still") {
@@ -81,11 +82,39 @@ $(document).ready(function () {
         //remove the add to favorites button from the cloned div
         fav.children("button").remove();
         fav.appendTo($("#favorites"));
+        //clears the favArray to prevent duplicates since each child is pushed every time a new favorite is added
+        var favArray = [];
+        //selects each animalDiv children class from the favorites div and pulls the html which contains the <p> and <img> tags and adds them to the favArray
+        $("#favorites").children('.animalDiv').each(function (){
+            child = $(this).html();
+            favArray.push(child);
+        });
+        //adds the favArray to localStorage for persistence across refreshes
+        localStorage.setItem(FAV_KEY, JSON.stringify(favArray));
     }
 
+    //clears the currently displayed Favorites as well as those stored in local storage
     function emptyFavorite() {
         $("#favorites").empty();
+        localStorage.clear();
     }
+
+    //gets the JSON array from localStorage, parses the array back to a JS array, then iterates thru the array making new animalDivs, attaches the favArray content,
+    // and then returns the new array of Divs. 
+    function loadFavorite() {
+        var JSONarray = localStorage.getItem(FAV_KEY);
+        var favArray = (JSON.parse(JSONarray));
+        var divArray = [];
+        if(favArray === null){
+            return false;
+        }
+        else{
+        for(var i = 0; i<favArray.length; i++){
+          divArray.push($("<div>").addClass("animalDiv").append(favArray[i]));  
+        }
+        return divArray;
+        }
+      }
 
     //prevents right clicking on images
     $(document).on("contextmenu", "img", function () {
@@ -101,5 +130,7 @@ $(document).ready(function () {
 
     //Displays starter array buttons
     renderButtons();
+    favArray = loadFavorite();
+    $("#favorites").append(favArray);
 
 }); 
