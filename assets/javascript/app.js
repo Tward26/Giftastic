@@ -21,7 +21,7 @@ $(document).ready(function () {
     //renders the GIFs by pulling them thru AJAX and attaches the correct attributes to the various pieces
     function renderGif() {
         var animal = $(this).attr("data-name");
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=MJ68Z6txRmEzdp8Ow2QiKvYGwxbb9ip4&limit=10&rating=pg";
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=MJ68Z6txRmEzdp8Ow2QiKvYGwxbb9ip4&limit=10&rating=pg";
 
         $.ajax({
             url: queryURL,
@@ -131,6 +131,7 @@ $(document).ready(function () {
     //Displays starter array buttons
     renderButtons();
     favArray = loadFavorite();
+    console.log(favArray);
     $("#favorites").append(favArray);
 
 }); 
