@@ -128,7 +128,7 @@ $(document).ready(function () {
     $(document).on("click", ".favButton", addFavorite);
     $(document).on("click", "#clrFav", emptyFavorite);
 
-    //Displays starter array buttons
+    //Displays starter array buttons and loads any persistently stored gifs
     renderButtons();
     favArray = loadFavorite();
     console.log(favArray);
