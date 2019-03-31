@@ -1,6 +1,4 @@
 # Giftastic
-Giphy API tool
-
 *Giphy API tool using AJAX and localStorage for persistence*
 
 ## Purpose:
