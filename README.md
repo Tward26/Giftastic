@@ -1,6 +1,9 @@
 # Giftastic
 *Giphy API tool using AJAX and localStorage for persistence*
 
+## Link to deployed project:
+https://tward26.github.io/Giftastic/
+
 ## Purpose:
 Through the use of the GIPHY api and AJAX calls I wanted to grab GIFs from giphy, provide a means to store them persistently, and also add other search options through the use of a basic form.
 
